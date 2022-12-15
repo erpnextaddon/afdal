@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include afdal_management *.css
+recursive-include afdal_management *.csv
+recursive-include afdal_management *.html
+recursive-include afdal_management *.ico
+recursive-include afdal_management *.js
+recursive-include afdal_management *.json
+recursive-include afdal_management *.md
+recursive-include afdal_management *.png
+recursive-include afdal_management *.py
+recursive-include afdal_management *.svg
+recursive-include afdal_management *.txt
+recursive-exclude afdal_management *.pyc
