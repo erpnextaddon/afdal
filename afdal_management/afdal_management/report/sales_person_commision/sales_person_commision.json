@@ -1,0 +1,30 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2022-12-16 22:14:46.981334",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "\u0623\u0641\u0636\u0644 \u0625\u062e\u062a\u064a\u0627\u0631",
+ "modified": "2022-12-16 22:36:58.608112",
+ "modified_by": "Administrator",
+ "module": "Afdal Management",
+ "name": "Sales Person Commision",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Sales Invoice",
+ "report_name": "Sales Person Commision",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Sales Manager (Afdal)"
+  },
+  {
+   "role": "Employee Self Service"
+  }
+ ]
+}
