@@ -41,6 +41,18 @@ def get_columns(filters):
             "width": 150,
         },
         {
+            "label": _("No Of Invoice"),
+            "fieldname": "no_invoices",
+            "fieldtype": "Float",
+            "width": 150,
+        },
+        {
+            "label": _("Payment Collected"),
+            "fieldname": "payment_collected",
+            "fieldtype": "Currency",
+            "width": 130,
+        },
+        {
             "label": _("Payment Commision 1%"),
             "fieldname": "payment_commisions",
             "fieldtype": "Currency",
@@ -71,7 +83,7 @@ def get_data(filters):
         row.employee_name = employee.employee_name
         row.total_qty = 0
         row.payment_commisions = 0
-        
+        row.no_invoices = 0 
         
         sales_person = frappe.db.get_value(
                 "Sales Person", {'employee': employee.name}, 'name')
@@ -97,13 +109,13 @@ def get_data(filters):
                             conversion_factor = uom_conversion[0].conversion_factor or 0.0
                             total_qty = total_qty + item.qty / conversion_factor
 
-                if total_qty > 2500 and total_qty < 3000:
+                if total_qty > 2500 and total_qty <= 3000:
                     row.qty_commision = (total_qty - 2500)*0.12
-                elif total_qty > 3000 and total_qty < 3500:
+                elif total_qty > 3000 and total_qty <= 3500:
                     row.qty_commision = ((total_qty - 3000)*0.2) + 60
-                elif total_qty > 3500 and total_qty < 4000:
+                elif total_qty > 3500 and total_qty <= 4000:
                     row.qty_commision = ((total_qty - 3500)*0.25) + 160
-                elif total_qty > 4000 and total_qty < 4500:
+                elif total_qty > 4000 and total_qty <= 4500:
                     row.qty_commision = ((total_qty - 4000)*0.3) + 285
                 elif total_qty > 4500:
                     row.qty_commision = ((total_qty - 4500)*0.5) + 435
@@ -125,13 +137,20 @@ def get_data(filters):
 
                 if payment_details:
                     paid_amount = payment_details[0].allocated or 0.0
+
                     if paid_amount:
+                        row.payment_collected = paid_amount
                         row.payment_commisions = (paid_amount * 1)/100
 
 
-        total_sale = frappe.db.sql("""select sum(total) as total_sale from `tabSales Invoice` where docstatus = 1 and posting_date between '%s' and '%s'"""%(filters.from_date,filters.to_date),as_dict=1)
+        total_sale = frappe.db.sql("""select sum(total) as total_sale,count(name) as no_invoice from `tabSales Invoice` where docstatus = 1 and posting_date between '%s' and '%s'"""%(filters.from_date,filters.to_date),as_dict=1)
         if total_sale:
+            frappe.errprint(total_sale)
+            frappe.errprint(total_sale[0].no_invoice)
+            row.no_invoices = total_sale[0].no_invoice
             total_sale = total_sale[0].total_sale
+
+        
 
             grade_count = frappe.db.sql("""select count(name) as grade_count from `tabEmployee` where status = 'Active' and sales_share_number = '%s'"""%(employee.sales_share_number),as_dict=1)
             if grade_count:
